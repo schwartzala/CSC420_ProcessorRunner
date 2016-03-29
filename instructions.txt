@@ -1,0 +1,50 @@
+/**
+ * Arrival
+ * <p>
+ * Simulation starts at time 0.
+ * <p>
+ * // ARRIVAL TIME
+ * // You generate the interarrival time using the rand()
+ * interarrivalTime = -0.2 * log(1-rand())
+ * arrivalTime(0) = 0
+ * // Start counting your processID from 1
+ * arrivalTime(i) = arrivaltime of (i-1) + interarrivalTime
+ * <p>
+ * // SERVICE TIME
+ * serviceTime = (2 + (5 - 2) * rand())
+ * // This will give you service time between 2 to 5 with uniform distribution
+ * <p>
+ * // Stop simulation as soon as teh 100th job is complete.
+ * <p>
+ * //
+ * OUTPUT:
+ * 1) Number of processes / tasks completed
+ * 2) End time of each task/job/processID
+ * Turn around time = end time - arrival time
+ * wait time (total) = end time - service time - arrival time of the completed processID
+ * 3) average turnaround time and wait time
+ * <p>
+ * <p>
+ * <p>
+ * Write a computer program to simulate Round Robin scheduling.
+ * Due date April 7th in class.
+ * I suggest you start working before the spring break. This way you can ask questions to clarify before the break.
+ * <p>
+ * Round Robin
+ * •	Process Arrives
+ * -	They have different arrival times. Generate task arrival with random arrival times and random service time. Use the rand function to generate values.
+ * <p>
+ * •	Upon arrival, a process is appended at the end of the ready queue, top of the queue, or right after the current process which is in service at the time of arrival
+ * •	Process Has:
+ * 	ID
+ * 	Service time
+ * 	Arrival Time
+ * -As time progresses, process will have
+ * Start time, wait time, accumulated time, end time etc.
+ * •	As time goes on, processes will be picked up by the dispatcher one at a time from the ready queue and will be allowed to execute for one quantum
+ * o	Quantum will be a variable, use quantum = 10
+ * o	Have a variable for context switch CS, use CS = 0. Your program should be able to use any value for CS.
+ * •	Main program will call the various subprograms as needed
+ * •	Main program should also have a variable to represent clock time
+ * •	If a process completes before the time quantum has been finished, do not waste the time just doing nothing. Let another process execute following RR algorithm.
+ */
