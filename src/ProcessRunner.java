@@ -15,28 +15,27 @@ public class ProcessRunner {
     static ProcessLogger log;
 
     static int clockTime = 0;
-    static int currentIndex = 0;
-    static boolean preempted = false;
+    static boolean finished = false;
+
+    static Process nextJob = new Process(0,0,0);
 
     public static void main(String[] args) {
         processList = new ArrayList<>();
-        processList.add(new Process(0, 0, 0));
-        for (int i = 1; i <= TOTAL_JOBS; i++) {
-            processList.add(new Process(i, arrivalTime(i), serviceTime()));
-        }
-        processList.remove(0);
-
         log = new ProcessLogger();
+        nextJob = new Process(nextJob.getId() + 1,
+                nextJob.getArrivalTime() + interArrivalTime(),
+                serviceTime()
+        );
 
         while (log.size() < TOTAL_JOBS) {
-            if (current().getArrivalTime() > clockTime) {
-                if (currentIndex == 0) {
-                    clockTime++;
-                } else {
-                    currentIndex = 0;
-                }
-            } else {
-                preempted = false;
+            while (nextJob.getArrivalTime() <= clockTime + 1) {
+                processList.add(nextJob);
+                nextJob = new Process(nextJob.getId() + 1,
+                        nextJob.getArrivalTime() + interArrivalTime(),
+                        serviceTime()
+                );
+            }
+            finished = false;
                 for (int i = 0; i < QUANTUM; i++) {
                     current().setAccumulatedTime(current().getAccumulatedTime() + 1);
                     clockTime++;
@@ -48,36 +47,32 @@ public class ProcessRunner {
                                         current().getServiceTime() -
                                         current().arrivalTime
                         );
-                        log.add(processList.remove(currentIndex));
-                        preempted = true;
+                        finished = true;
+                        log.add(processList.remove(0));
                         break;
                     }
                 }
                 clockTime += CS;
-                if (!preempted) {
-                    if (currentIndex >= processList.size() - 1) {
-                        currentIndex = 0;
-                    } else {
-                        currentIndex++;
-                    }
-                }
+                if (!finished) { processList.add(processList.remove(0)); }
             }
-        }
+
+
+        // TOTAL_JOBS reached.
+
         log.sort();
         System.out.println(log.toString());
     }
 
     public static Process current() {
         if (!processList.isEmpty()) {
-            return processList.get(currentIndex);
+            return processList.get(0);
         }
         return null;
     }
 
     public static double arrivalTime(int id) {
         double intertime = interArrivalTime();
-        System.out.println(intertime);
-        return Math.ceil(processList.get(id - 1).getArrivalTime() + intertime);
+        return processList.get(id - 1).getArrivalTime() + intertime;
     }
 
     public static double interArrivalTime() {
@@ -86,6 +81,10 @@ public class ProcessRunner {
 
     public static double serviceTime() {
         return Math.ceil(2 + (5 - 2) * Math.random());
+    }
+
+    public static Process makeNewProcess(int i) {
+        return new Process(i, arrivalTime(i), serviceTime());
     }
 
 }

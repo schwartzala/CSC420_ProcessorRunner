@@ -46,9 +46,11 @@ public class ProcessLogger extends ArrayList<Process> {
             "\tTOTAL_PROCESSES_COMPLETED: " + this.size() + "\n" +
             "\tAVERAGE_TURNAROUND_TIME: " + this.getAverageTurnaroundTime() + "\n" +
             "\tAVERAGE_WAIT_TIME: " + this.getAverageWaitTime() + "\n" +
-            "\tPROCESS_LIST:\n";
+            "\tPROCESS_LIST\n";
         for (int i = 0; i < this.size(); i++) {
             list += "\t\tPROCESS " + this.get(i).getId() + "\n" +
+                    "\t\t\tARRIVAL TIME: " + this.get(i).getArrivalTime() + "\n" +
+                    "\t\t\tSERVICE TIME: " + this.get(i).getServiceTime() + "\n" +
                     "\t\t\tEND TIME: " + this.get(i).getEndTime() + "\n" +
                     "\t\t\tTURNAROUND TIME: " + this.get(i).getTurnaroundTime() + "\n" +
                     "\t\t\tWAIT TIME: " + this.get(i).getWaitTime() + "\n";
