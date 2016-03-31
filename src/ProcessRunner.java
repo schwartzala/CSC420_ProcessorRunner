@@ -16,6 +16,7 @@ public class ProcessRunner {
     static int clockTime = 0;
     static boolean finished = false;
 
+    static int jobCount = 0;
     static Process nextJob = new Process(0,0,0);
 
     public static void main(String[] args) {
@@ -25,12 +26,14 @@ public class ProcessRunner {
                 nextJob.getArrivalTime() + interArrivalTime(),
                 serviceTime()
         );
+        jobCount++;
 
         // TOTAL_JOBS loop begins.
 
         while (log.size() < TOTAL_JOBS) {
             while (nextJob.getArrivalTime() <= clockTime + 1) {
                 processList.add(nextJob);
+                jobCount++;
                 nextJob = new Process(nextJob.getId() + 1,
                         arrivalTime(nextJob.getArrivalTime()),
                         serviceTime()
@@ -66,6 +69,7 @@ public class ProcessRunner {
 
         log.sort();
         System.out.println(log.toString());
+        System.out.println(jobCount + " Total Jobs Generated");
     }
 
     public static Process current() {
