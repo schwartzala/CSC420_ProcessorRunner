@@ -55,6 +55,7 @@ public class ProcessLogger extends ArrayList<Process> {
                     "\t\t\tTURNAROUND TIME: " + this.get(i).getTurnaroundTime() + "\n" +
                     "\t\t\tWAIT TIME: " + this.get(i).getWaitTime() + "\n";
         }
+        list += "END LOGGER";
         return list;
     }
 

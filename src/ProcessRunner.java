@@ -3,7 +3,6 @@
  */
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class ProcessRunner {
 
@@ -27,6 +26,8 @@ public class ProcessRunner {
                 serviceTime()
         );
 
+        // TOTAL_JOBS loop begins.
+
         while (log.size() < TOTAL_JOBS) {
             while (nextJob.getArrivalTime() <= clockTime + 1) {
                 processList.add(nextJob);
@@ -35,7 +36,9 @@ public class ProcessRunner {
                         serviceTime()
                 );
             }
-            finished = false;
+            if (clockTime < current().getArrivalTime()) { clockTime++; }
+            else {
+                finished = false;
                 for (int i = 0; i < QUANTUM; i++) {
                     current().setAccumulatedTime(current().getAccumulatedTime() + 1);
                     clockTime++;
@@ -53,11 +56,13 @@ public class ProcessRunner {
                     }
                 }
                 clockTime += CS;
-                if (!finished) { processList.add(processList.remove(0)); }
+                if (!finished) {
+                    processList.add(processList.remove(0));
+                }
             }
+        }
 
-
-        // TOTAL_JOBS reached.
+        // TOTAL_JOBS loop ends.
 
         log.sort();
         System.out.println(log.toString());
@@ -70,9 +75,8 @@ public class ProcessRunner {
         return null;
     }
 
-    public static double arrivalTime(int id) {
-        double intertime = interArrivalTime();
-        return processList.get(id - 1).getArrivalTime() + intertime;
+    public static double arrivalTime(double previousArrivalTime) {
+        return previousArrivalTime + interArrivalTime();
     }
 
     public static double interArrivalTime() {
@@ -81,10 +85,6 @@ public class ProcessRunner {
 
     public static double serviceTime() {
         return Math.ceil(2 + (5 - 2) * Math.random());
-    }
-
-    public static Process makeNewProcess(int i) {
-        return new Process(i, arrivalTime(i), serviceTime());
     }
 
 }
