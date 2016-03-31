@@ -36,7 +36,7 @@ public class ProcessRunner {
                         serviceTime()
                 );
             }
-            if (clockTime < current().getArrivalTime()) { clockTime++; }
+            if (processList.isEmpty() || clockTime < current().getArrivalTime()) { clockTime++; }
             else {
                 finished = false;
                 for (int i = 0; i < QUANTUM; i++) {
@@ -69,10 +69,7 @@ public class ProcessRunner {
     }
 
     public static Process current() {
-        if (!processList.isEmpty()) {
-            return processList.get(0);
-        }
-        return null;
+        return processList.get(0);
     }
 
     public static double arrivalTime(double previousArrivalTime) {
@@ -88,5 +85,3 @@ public class ProcessRunner {
     }
 
 }
-
-
