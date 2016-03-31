@@ -32,7 +32,7 @@ public class ProcessRunner {
             while (nextJob.getArrivalTime() <= clockTime + 1) {
                 processList.add(nextJob);
                 nextJob = new Process(nextJob.getId() + 1,
-                        nextJob.getArrivalTime() + interArrivalTime(),
+                        arrivalTime(nextJob.getArrivalTime()),
                         serviceTime()
                 );
             }
