@@ -4,7 +4,7 @@
 
 import java.util.ArrayList;
 
-public class ProcessRunner {
+public class RoundRobinScheduler {
 
     final static int TOTAL_JOBS = 100;
     final static int QUANTUM = 1;
