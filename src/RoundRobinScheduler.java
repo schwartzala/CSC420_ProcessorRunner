@@ -16,6 +16,8 @@ public class RoundRobinScheduler {
     static int clockTime = 0;
     static boolean finished = false;
 
+    static double totalArrival = 0;
+    static double totalService = 0;
     static int jobCount = 0;
     static Process nextJob = new Process(0,0,0);
 
@@ -69,7 +71,9 @@ public class RoundRobinScheduler {
 
         log.sort();
         System.out.println(log.toString());
-        System.out.println(jobCount + " Total Jobs Generated");
+        System.out.println("TOTAL JOBS GENERATED: " + jobCount);
+        System.out.println("AVERAGE ARRIVAL TIME: " + (totalArrival / jobCount));
+        System.out.println("AVERAGE SERVICE TIME: " + (totalService / jobCount));
     }
 
     public static Process current() {
@@ -81,11 +85,15 @@ public class RoundRobinScheduler {
     }
 
     public static double interArrivalTime() {
-        return -0.2 * Math.log(1 - Math.random());
+        double randTime = -0.2 * Math.log(1 - Math.random());
+        totalArrival = totalArrival + randTime;
+        return randTime;
     }
 
     public static double serviceTime() {
-        return Math.ceil(2 + (5 - 2) * Math.random());
+        double randTime = (2 + (5 - 2) * Math.random());
+        totalService = totalService + randTime;
+        return randTime;
     }
 
 }

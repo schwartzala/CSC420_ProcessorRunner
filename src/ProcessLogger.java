@@ -6,17 +6,20 @@ import java.util.Comparator;
  */
 public class ProcessLogger extends ArrayList<Process> {
 
+    double totalServiceTime;
     double totalWaitTime;
     double totalTurnaroundTime;
 
     ProcessLogger() {
         super();
+        totalServiceTime = 0;
         totalWaitTime = 0;
         totalTurnaroundTime = 0;
     }
 
     @Override
     public boolean add(Process process) {
+        addTotalServiceTime(process.getServiceTime());
         addTotalWaitTime(process.getWaitTime());
         addTotalTurnaroundTime(process.getTurnaroundTime());
         return super.add(process);
@@ -43,11 +46,8 @@ public class ProcessLogger extends ArrayList<Process> {
         }
         String list = new String();
         list += "PROCESS LOGGER\n" +
-            "\tTOTAL_PROCESSES_COMPLETED: " + this.size() + "\n" +
-            "\tAVERAGE_TURNAROUND_TIME: " + this.getAverageTurnaroundTime() + "\n" +
-            "\tAVERAGE_WAIT_TIME: " + this.getAverageWaitTime() + "\n" +
-            "\tPROCESS_LIST\n";
-        for (int i = 0; i < this.size(); i++) {
+                "\tPROCESS_LIST\n";
+        for (int i = 0; i < this.size() && i < 20; i++) {
             list += "\t\tPROCESS " + this.get(i).getId() + "\n" +
                     "\t\t\tARRIVAL TIME: " + this.get(i).getArrivalTime() + "\n" +
                     "\t\t\tSERVICE TIME: " + this.get(i).getServiceTime() + "\n" +
@@ -55,9 +55,15 @@ public class ProcessLogger extends ArrayList<Process> {
                     "\t\t\tTURNAROUND TIME: " + this.get(i).getTurnaroundTime() + "\n" +
                     "\t\t\tWAIT TIME: " + this.get(i).getWaitTime() + "\n";
         }
-        list += "END LOGGER";
+        list += "\tTOTAL_PROCESSES_COMPLETED: " + this.size() + "\n" +
+                "\tAVERAGE_SERVICE_TIME: " + this.getAverageServiceTime() + "\n" +
+                "\tAVERAGE_TURNAROUND_TIME: " + this.getAverageTurnaroundTime() + "\n" +
+                "\tAVERAGE_WAIT_TIME: " + this.getAverageWaitTime() + "\n" +
+                "END LOGGER\n";
         return list;
     }
+
+    public void addTotalServiceTime(double time) { this.totalServiceTime += time; }
 
     public void addTotalWaitTime(double time) {
         this.totalWaitTime += time;
@@ -65,6 +71,11 @@ public class ProcessLogger extends ArrayList<Process> {
 
     public void addTotalTurnaroundTime(double time) {
         this.totalTurnaroundTime += time;
+    }
+
+    public double getAverageServiceTime() {
+        if (!this.isEmpty()) { return this.totalServiceTime / this.size(); }
+        else { return 0; }
     }
 
     public double getAverageWaitTime() {
