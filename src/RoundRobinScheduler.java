@@ -85,7 +85,7 @@ public class RoundRobinScheduler {
     }
 
     public static double interArrivalTime() {
-        double randTime = -0.2 * Math.log(1 - Math.random());
+        double randTime = -2.0 * Math.log(1 - Math.random());
         totalArrival = totalArrival + randTime;
         return randTime;
     }
